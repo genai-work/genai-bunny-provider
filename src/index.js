@@ -3,6 +3,11 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { getMimeType } from './utils/index.js';
 
+const bunnyAxios = axios.create({
+  maxBodyLength: Infinity,
+  maxContentLength: Infinity,
+});
+
 const { ApplicationError } = errors;
 
 /**
@@ -39,7 +44,7 @@ const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path }) => {
     const path = upload_path ? `${upload_path}/` : '';
 
     try {
-      const response = await axios.put(
+      const response = await bunnyAxios.put(
         `https://${hostname}/${storage_zone}/${path}${file.hash}${file.ext}`,
         data,
         {
@@ -47,8 +52,6 @@ const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path }) => {
             AccessKey: api_key,
             'content-type': 'application/octet-stream',
           },
-          maxContentLength: Infinity,
-          maxBodyLength: Infinity,
         },
       );
 
@@ -78,7 +81,7 @@ const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path }) => {
     try {
       const path = upload_path ? `${upload_path}/` : '';
 
-      const response = await axios.get(
+      const response = await bunnyAxios.get(
         `https://${hostname}/${storage_zone}/${path}${file.hash}${file.ext}`,
         {
           headers: {
@@ -118,7 +121,7 @@ const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path }) => {
   const deleteFile = async (file) => {
     try {
       const path = upload_path ? `${upload_path}/` : '';
-      const response = await axios.delete(
+      const response = await bunnyAxios.delete(
         `https://${hostname}/${storage_zone}/${path}${file.hash}${file.ext}`,
         {
           headers: {
