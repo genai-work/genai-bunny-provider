@@ -9,6 +9,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/genai-work/genai-bunny-provider.git"
