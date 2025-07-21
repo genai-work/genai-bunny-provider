@@ -17,7 +17,7 @@ const { ApplicationError } = errors;
  * @returns {Object} The initialized upload, download, and delete methods.
  */
 
-const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path, mb_size }) => {
+const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path }) => {
   if (!api_key || !storage_zone || !pull_zone || !hostname) {
     throw new ApplicationError(
       "BUNNY_API_KEY, BUNNY_HOSTNAME, BUNNY_STORAGE_ZONE or BUNNY_PULL_ZONE can't be null or undefined.",
@@ -38,8 +38,6 @@ const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path, mb_size
 
     const path = upload_path ? `${upload_path}/` : '';
 
-    if(!mb_size) mb_size = 512;
-
     try {
       const response = await axios.put(
         `https://${hostname}/${storage_zone}/${path}${file.hash}${file.ext}`,
@@ -49,8 +47,8 @@ const init = ({ api_key, storage_zone, pull_zone, hostname, upload_path, mb_size
             AccessKey: api_key,
             'content-type': 'application/octet-stream',
           },
-          maxBodyLength: mb_size * 1024 * 1024,
-          maxContentLength: mb_size * 1024 * 1024,
+          maxContentLength: Infinity,
+          maxBodyLength: Infinity,
         },
       );
 

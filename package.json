@@ -1,6 +1,6 @@
 {
   "name": "genai-bunny-provider",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Bunny.net provider for Strapi upload",
   "main": "./lib/index.js",
   "type": "commonjs",
